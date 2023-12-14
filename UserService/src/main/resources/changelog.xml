@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="create_user_table" author="mmkhitaryan">
+        <sql>
+            create table if not exists public."user"
+            (
+                id         uuid default gen_random_uuid() not null
+                    constraint user_pk
+                        primary key,
+                first_name varchar                        not null,
+                last_name  varchar                        not null,
+                email      varchar                        not null,
+                password   varchar                        not null,
+                user_role        text
+                constraint user_role_check
+                check (user_role = ANY (ARRAY ['ADMIN'::text, 'USER'::text])) not null,
+                budget DOUBLE PRECISION not null
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_product_tables" author="mmkhitaryan">
+        <sql>
+            create table public.product
+            (
+                id      uuid             default gen_random_uuid()
+                    constraint product_pk
+                        primary key,
+                title   varchar(255)                    not null,
+                price   double precision default 0 not null,
+                quantity integer default 0         not null,
+                description text                   not null,
+                user_id uuid                    not null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_category_tables" author="mmkhitaryan">
+        <sql>
+            create table public.category
+            (
+                id      uuid             default gen_random_uuid()
+                    constraint category_pk
+                        primary key,
+                title   varchar(255)                    not null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_foreign_key" author="mmkhitaryan">
+        <sql>
+            alter table product
+                add category_id uuid not null;
+
+            alter table product
+                add constraint product_category_id_fk
+                    foreign key (category_id) references category;
+        </sql>
+    </changeSet>
+    <changeSet id="add_photo_to_product" author="mmkhitaryan">
+        <sql>
+            alter table product
+                add photo varchar not null;
+        </sql>
+    </changeSet>
+    <changeSet id="drop_not_null" author="mmkhitaryan">
+        <sql>
+            alter table product
+                alter column photo drop not null;
+        </sql>
+    </changeSet>
+    <changeSet id="add_bucket_table" author="mmkhitaryan">
+        <sql>
+            create table bucket
+            (
+                id      uuid default gen_random_uuid() not null,
+                user_id uuid                           not null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="primary_key_add" author="mmkhitaryab">
+        <sql>
+            alter table bucket
+                add constraint bucket_pk
+                    primary key (id);
+
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_buckets_products_table" author="mmkhitaryan">
+        <sql>
+            create table bucket_products
+            (
+                bucket_id  uuid not null
+                    constraint bucket_product_bucket_id_fk
+                        references bucket (id),
+                products_id uuid not null
+                    constraint bucket_product_product_id_fk
+                        references product
+            );
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_orders_table" author="mmkhitaryan">
+        <sql>
+            create table orders
+            (
+                id      uuid default gen_random_uuid() not null
+                    constraint order_pk
+                        primary key,
+                sum     double precision               not null,
+                user_id uuid                           not null,
+                status        text
+                    constraint status_check
+                        check (status = ANY (ARRAY ['PAID'::text, 'UNPAID'::text])) not null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_orders_products_table" author="mmkhitaryan">
+        <sql>
+            create table orders_products
+            (
+                products_id uuid not null
+                    constraint order_products_product_id_fk
+                        references product,
+                order_id uuid not null
+                    constraint order_products_order_id_fk
+                        references orders
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_quantity_to_orders" author="mmkhitaryan">
+        <sql>
+            alter table orders
+                add quantity integer;
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_is_delete_to_product" author="mmkhitaryan">
+        <sql>
+            alter table product
+                add is_deleted boolean default false not null;
+        </sql>
+    </changeSet>
+
+    <changeSet id="drop_quantity_columns" author="mmkhitaryan">
+        <sql>
+            alter table orders
+                drop column quantity;
+        </sql>
+    </changeSet>
+
+    <changeSet id="add_quantity_to_join_table" author="mmkhitaryan">
+        <sql>
+            alter table orders_products
+                add quantity integer default 1 not null;
+        </sql>
+    </changeSet>
+    <changeSet id="add_primary_key_to_join_table" author="mmkhitaryan">
+        <sql>
+            alter table orders_products
+                add id uuid default gen_random_uuid() not null;
+
+            alter table orders_products
+                add constraint orders_products_pk
+                    primary key (id);
+
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="alter_bucket_product_table_names" author="mmkhitaryan">
+        <sql>
+            alter table bucket_products
+                rename column products_id to product_id;
+
+            alter table bucket_products
+                rename to bucket_product;
+        </sql>
+    </changeSet>
+
+    <changeSet id="alter_orders_products_table" author="mmkhitaryan">
+        <sql>
+
+            alter table orders_products
+                rename column products_id to product_id;
+
+            alter table orders_products
+                rename constraint orders_products_pk to orders_product_pk;
+
+            alter table orders_products
+                rename to orders_product;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

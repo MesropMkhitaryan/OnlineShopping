@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/OnlineShop.iml" filepath="$PROJECT_DIR$/.idea/OnlineShop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApiGateway/api-gateway.iml" filepath="$PROJECT_DIR$/ApiGateway/api-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EurekaServer/eureka-server.iml" filepath="$PROJECT_DIR$/EurekaServer/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/product-service/product-service.iml" filepath="$PROJECT_DIR$/product-service/product-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UserService/user-service.iml" filepath="$PROJECT_DIR$/UserService/user-service.iml" />
+    </modules>
+  </component>
+</project>
