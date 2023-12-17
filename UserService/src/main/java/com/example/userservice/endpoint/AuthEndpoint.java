@@ -1,10 +1,10 @@
 package com.example.userservice.endpoint;
 
-import com.example.userservice.dto.AuthenticationRequest;
-import com.example.userservice.dto.AuthenticationResponse;
-import com.example.userservice.dto.RegisterRequest;
-import com.example.userservice.model.User;
-import com.example.userservice.service.AuthenticationService;
+import com.example.userservice.dto.request.AuthenticationRequest;
+import com.example.userservice.dto.response.AuthenticationResponse;
+import com.example.userservice.dto.request.RegisterRequest;
+import com.example.userservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Slf4j
-//@CrossOrigin(origins = "http://localhost:4200/")
 public class AuthEndpoint {
 
-    private final AuthenticationService service;
+    private final UserService service;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
-        log.error("start registering");
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request){
         service.register(request);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
-        log.error("start login");
-
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(service.authenticate(request));
     }
 

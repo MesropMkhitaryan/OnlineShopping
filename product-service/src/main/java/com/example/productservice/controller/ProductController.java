@@ -1,12 +1,11 @@
 package com.example.productservice.controller;
 
-import com.example.productservice.dto.ProductRequest;
-import com.example.productservice.dto.ProductResponse;
-import com.example.productservice.dto.ProductUpdateRequest;
-import com.example.productservice.dto.SaveImgRequest;
-import com.example.productservice.feign.UserFeignClient;
+import com.example.productservice.dto.request.ProductRequest;
+import com.example.productservice.dto.response.ProductResponse;
+import com.example.productservice.dto.request.ProductUpdateRequest;
 import com.example.productservice.service.ProductService;
-import com.example.productservice.util.ImgUtil;
+import com.example.productservice.util.IOUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,7 +25,7 @@ public class ProductController {
 
     private final ProductService service;
     private final ModelMapper mapper;
-    private final ImgUtil imgUtil;
+    private final IOUtil imgUtil;
 
     @GetMapping("/find/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") UUID productId) {
@@ -34,13 +33,12 @@ public class ProductController {
     }
 
     @PostMapping(value = "/create", produces = "application/json")
-    public ResponseEntity<?> create(@RequestBody ProductRequest request, @RequestHeader ("Authorization") String authHeader){
+    public ResponseEntity<?> create(@Valid @RequestBody ProductRequest request, @RequestHeader ("Authorization") String authHeader){
         return ResponseEntity.ok(mapper.map(service.save(request,authHeader), ProductResponse.class));
     }
 
     @PostMapping(value = "/upload/{productId}")
     public ResponseEntity<?> uploadImg(@RequestParam("photo") MultipartFile file, @PathVariable("productId") UUID productId){
-        log.error("start of image uploading");
         return ResponseEntity.ok(service.saveImgIntoProduct(productId,file));
     }
 
@@ -52,13 +50,13 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = "application/json")
-    public ResponseEntity<?> delete(@PathVariable UUID id){
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable UUID id, @RequestHeader("Authorization") String authHeader){
+        service.delete(id, authHeader);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/update/{id}", produces = "application/json")
-    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody ProductUpdateRequest productRequest){
+    public ResponseEntity<?> update(@PathVariable UUID id, @Valid @RequestBody ProductUpdateRequest productRequest){
         return ResponseEntity.ok(service.update(id, productRequest));
     }
 
@@ -69,7 +67,7 @@ public class ProductController {
 
     @GetMapping("/getProductByUserId")
     public ResponseEntity<?> getProductsByUserId(@RequestHeader ("Authorization") String authHeader){
-        return ResponseEntity.ok(service.findByUserId(authHeader));
+        return ResponseEntity.ok(service.findAllByUserId(authHeader));
     }
 
     @GetMapping("/getUser")

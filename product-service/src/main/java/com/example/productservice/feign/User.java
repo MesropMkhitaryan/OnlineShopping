@@ -1,4 +1,4 @@
-package com.example.productservice.dto;
+package com.example.productservice.feign;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +13,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private Role userRole;
     private double budget;
 }

@@ -1,5 +1,6 @@
-package com.example.userservice.dto;
+package com.example.productservice.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
-
-    private String email;
-    String password;
-
+public class CategoryRequest {
+    @NotBlank
+    private String title;
 }

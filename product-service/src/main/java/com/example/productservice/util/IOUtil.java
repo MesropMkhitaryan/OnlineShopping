@@ -1,5 +1,7 @@
 package com.example.productservice.util;
 
+import com.example.productservice.customException.FileDontExistException;
+import com.example.productservice.customException.FileStorageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -7,18 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class ImgUtil {
+public class IOUtil {
 
     @Value("${onlineShop.imageStorage}")
     private String imageStorage;
@@ -29,17 +27,16 @@ public class ImgUtil {
 
     public String saveImageFile(MultipartFile uploadedImageFile) {
         if (!uploadedImageFile.isEmpty()) {
-            String picture = System.currentTimeMillis() + "_" + uploadedImageFile.getOriginalFilename();
-            File newFile = new File(getFileStorage() +"/" + picture);
+            String fileName = System.currentTimeMillis() + "_" + uploadedImageFile.getOriginalFilename();
+            File newFile = new File(getFileStorage() +"/" + fileName);
             try {
                 uploadedImageFile.transferTo(newFile);
             } catch (IOException e) {
-                log.error(Arrays.toString(e.getStackTrace()));
+                throw new FileStorageException("Failed to save the image file");
             }
-            return picture;
+            return fileName;
         }
-
-        return null;
+         throw new FileDontExistException("File don't exist");
     }
 
     public byte[] getImageFully(String fileName) {

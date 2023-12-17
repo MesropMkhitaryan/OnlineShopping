@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAllByUserIdAndIsDeletedFalse(UUID userId);
     List<Product> findAllByCategoryId(UUID categoryId);
     List<Product> findAllByIsDeletedFalse();
-
 }

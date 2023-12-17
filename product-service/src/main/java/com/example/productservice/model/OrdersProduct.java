@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @ToString(exclude = {"product", "order"})
 @Table( name = "orders_product")
-public class OrdersProducts {
+public class OrdersProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;

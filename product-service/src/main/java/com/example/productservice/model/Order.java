@@ -24,7 +24,7 @@ public class Order {
     private UUID userId;
     @JsonIgnore
     @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<OrdersProducts> orderProducts;
+    private List<OrdersProduct> orderProducts;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 }

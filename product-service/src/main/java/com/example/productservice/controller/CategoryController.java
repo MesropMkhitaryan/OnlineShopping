@@ -1,9 +1,8 @@
 package com.example.productservice.controller;
 
-import com.example.productservice.dto.CategoryRequest;
+import com.example.productservice.dto.request.CategoryRequest;
 import com.example.productservice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class CategoryController {
     public ResponseEntity<?> createCategory(@RequestBody CategoryRequest request){
         return ResponseEntity.ok(service.save(request));
     }
-//
+
     @GetMapping(value = "/list", produces = "application/json")
     public ResponseEntity<?> register(){
         return ResponseEntity
@@ -33,10 +32,5 @@ public class CategoryController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-//    @PutMapping(value = "/update/{id}", produces = "application/json")
-//    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody ProductRequest productRequest){
-//        return ResponseEntity.ok(service.update(id, productRequest));
-//    }
 
 }

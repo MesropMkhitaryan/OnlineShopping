@@ -1,0 +1,28 @@
+package com.example.productservice.dto.request;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.UUID;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductRequest {
+    @NotBlank(message = "product's title can't be null or empty")
+    private String title;
+    @Min(value = 1, message = "price should be at least 1")
+    private double price;
+    @Min(value = 1, message = "quantity should be at least 1")
+    private int quantity;
+    @Size(min = 10, max = 600, message = "description length should be between 3-600")
+    private String description;
+    private UUID categoryId;
+}

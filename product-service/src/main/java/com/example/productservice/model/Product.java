@@ -3,7 +3,6 @@ package com.example.productservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +31,7 @@ public class Product {
     private boolean isDeleted;
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    private List<OrdersProducts> orderProducts;
+    private List<OrdersProduct> orderProducts;
 
     @Override
     public boolean equals(Object obj) {

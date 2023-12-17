@@ -40,9 +40,6 @@ public class GatewayConfig {
                 .route("category-service", r -> r.path("/api/v1/category/**")
                         .filters(f-> f.filter(adminFilter))
                         .uri("lb://products-service"))
-//                .route("products-category-service", r -> r.path("/api/v1/category/**")
-//                        .filters(f -> f.filter(adminFilter))
-//                        .uri("lb://products-service"))
                 .build();
     }
 }

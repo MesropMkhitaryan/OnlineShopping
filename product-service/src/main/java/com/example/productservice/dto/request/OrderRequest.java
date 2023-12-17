@@ -1,5 +1,6 @@
-package com.example.productservice.dto;
+package com.example.productservice.dto.request;
 
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+    @Min(value = 1, message = "sum of order should be at least 1")
     private double sum;
-    private List<UUID> productIds;
     private HashMap<UUID, Integer> quantity;
 }

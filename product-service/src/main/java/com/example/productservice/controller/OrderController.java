@@ -1,7 +1,8 @@
 package com.example.productservice.controller;
 
-import com.example.productservice.dto.OrderRequest;
+import com.example.productservice.dto.request.OrderRequest;
 import com.example.productservice.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/product")
-    public ResponseEntity<?> orderProduct(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String header) {
+    public ResponseEntity<?> orderProduct(@Valid @RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String header) {
        return ResponseEntity.ok(orderService.orderProduct(orderRequest,header));
     }
 }

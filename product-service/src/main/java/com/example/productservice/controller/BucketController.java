@@ -1,6 +1,7 @@
 package com.example.productservice.controller;
 
 import com.example.productservice.service.BucketService;
+import com.example.productservice.service.impl.BucketServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,7 @@ public class BucketController {
 
     @PostMapping("/add/{productId}")
     public void addProductToBucket(@PathVariable UUID productId, @RequestHeader("Authorization") String authHeader){
-        log.error("start adding to bucket");
-        service.addProduct(productId, authHeader);
+        service.addProductToBucket(productId, authHeader);
     }
 
     @GetMapping("/get")
