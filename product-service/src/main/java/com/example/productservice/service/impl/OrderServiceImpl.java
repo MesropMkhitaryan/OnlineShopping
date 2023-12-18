@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         Integer orderedProductQuantity = orderRequest.getQuantity().get(productId);
 
         productService.updateProductQuantity(product, orderedProductQuantity);
-        bucketService.deleteProductFromBucket(productId, authHeader);
+        bucketService.deleteProductFromOneBucket(productId, authHeader);
 
         OrdersProduct orderProduct = OrdersProduct.builder()
                 .product(product)

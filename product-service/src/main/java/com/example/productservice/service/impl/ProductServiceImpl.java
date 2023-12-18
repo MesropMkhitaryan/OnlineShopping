@@ -10,11 +10,11 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.service.BucketService;
+import com.example.productservice.service.CategoryService;
 import com.example.productservice.service.ProductService;
 import com.example.productservice.util.IOUtil;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,15 +24,31 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final UserFeignClient userFeignClient;
-    private final CategoryServiceImpl categoryService;
+    private final CategoryService categoryService;
     private final BucketService bucketService;
     private final ModelMapper mapper;
     private final IOUtil imageUtil;
+
+    @Autowired
+    public ProductServiceImpl(
+            ProductRepository repository,
+            UserFeignClient userFeignClient,
+            CategoryService categoryService,
+            BucketService bucketService,
+            ModelMapper mapper,
+            IOUtil imageUtil
+    ) {
+        this.repository = repository;
+        this.userFeignClient = userFeignClient;
+        this.categoryService = categoryService;
+        this.bucketService = bucketService;
+        this.mapper = mapper;
+        this.imageUtil = imageUtil;
+    }
 
 
     public Product save(ProductRequest request, String authHeader) {
@@ -64,10 +80,9 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    @Transactional
     public void delete(UUID id, String authHeader) {
         Product product = findById(id);
-        bucketService.removeProductFromBuckets(id, authHeader);
+        bucketService.deleteProductFromMultipleBuckets(id, authHeader);
         product.setDeleted(true);
         repository.save(product);
     }

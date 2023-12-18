@@ -28,7 +28,7 @@ public class BucketController {
 
     @DeleteMapping("/delete/{productId}")
     public void deleteProductFromBucket(@PathVariable UUID productId, @RequestHeader("Authorization") String authHeader){
-        service.deleteProductFromBucket(productId, authHeader);
+        service.deleteProductFromOneBucket(productId, authHeader);
     }
 
 }

@@ -6,9 +6,10 @@ import com.example.productservice.feign.UserFeignClient;
 import com.example.productservice.model.Bucket;
 import com.example.productservice.model.Product;
 import com.example.productservice.repository.BucketRepository;
-import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.service.BucketService;
-import lombok.RequiredArgsConstructor;
+import com.example.productservice.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,37 +18,45 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class BucketServiceImpl implements BucketService {
     private final BucketRepository repository;
     private final UserFeignClient userFeignClient;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
+
+    @Autowired
+    public BucketServiceImpl(
+            BucketRepository repository,
+            UserFeignClient userFeignClient,
+            @Lazy ProductService productService
+    ) {
+        this.repository = repository;
+        this.userFeignClient = userFeignClient;
+        this.productService = productService;
+    }
 
     public void addProductToBucket(UUID productId, String authHeader) {
         User user = userFeignClient.getCurrentUser(authHeader);
-        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product product = productService.findById(productId);
 
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            Optional<Bucket> optionalBucket = repository.findByUserId(user.getId());
+        Optional<Bucket> optionalBucket = repository.findByUserId(user.getId());
 
-            if (optionalBucket.isPresent()) {
-                addProductToExistingBucket(optionalBucket.get(), product);
-            } else {
-                createAndSaveNewBucket(user.getId(), product);
-            }
+        if (optionalBucket.isPresent()) {
+            addProductToExistingBucket(optionalBucket.get(), product);
+        } else {
+            createAndSaveNewBucket(user.getId(), product);
         }
     }
 
-    private void addProductToExistingBucket(Bucket bucket, Product product) {
-        if (isNewProductInBucket(bucket, product)) {
+
+    public void addProductToExistingBucket(Bucket bucket, Product product) {
+        if (isProductNewInBucket(bucket, product)) {
             bucket.getProduct().add(product);
             repository.save(bucket);
         }
     }
 
-    private void createAndSaveNewBucket(UUID userId, Product product) {
-        List<Product> productList = new ArrayList<>();
+    public void createAndSaveNewBucket(UUID userId, Product product) {
+        ArrayList<Product> productList = new ArrayList<>();
         productList.add(product);
         Bucket newBucket = new Bucket();
         newBucket.setUserId(userId);
@@ -55,20 +64,19 @@ public class BucketServiceImpl implements BucketService {
         repository.save(newBucket);
     }
 
-    private boolean isNewProductInBucket(Bucket bucket, Product product) {
+    public boolean isProductNewInBucket(Bucket bucket, Product product) {
         return bucket.getProduct().stream().noneMatch(p -> p.equals(product));
     }
 
-    public void deleteProductFromBucket(UUID productId, String authHeader) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        if (optionalProduct.isPresent()) {
-            Product product = optionalProduct.get();
-            Bucket bucket = findByUser(authHeader);
-            List<Product> products = bucket.getProduct();
-            products.remove(product);
-            repository.save(bucket);
-        }
+    public void deleteProductFromOneBucket(UUID productId, String authHeader) {
+        Product product = productService.findById(productId);
+        Bucket bucket = findByUser(authHeader);
+        List<Product> products = bucket.getProduct();
+        products.remove(product);
+        repository.save(bucket);
     }
+
+
 
 
     public Bucket findByUser(String authHeader) {
@@ -78,11 +86,10 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void removeProductFromBuckets(UUID productId, String authHeader) {
+    public void deleteProductFromMultipleBuckets(UUID productId, String authHeader) {
         List<Bucket> bucketsByProductId = repository.findBucketsByProductId(productId);
         for (Bucket bucket : bucketsByProductId) {
-            deleteProductFromBucket(productId,authHeader);
-            repository.save(bucket);
+            deleteProductFromOneBucket(productId, authHeader);
         }
     }
 
