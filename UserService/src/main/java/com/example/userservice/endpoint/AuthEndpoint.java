@@ -1,8 +1,8 @@
 package com.example.userservice.endpoint;
 
 import com.example.userservice.dto.request.AuthenticationRequest;
-import com.example.userservice.dto.response.AuthenticationResponse;
 import com.example.userservice.dto.request.RegisterRequest;
+import com.example.userservice.dto.response.AuthenticationResponse;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

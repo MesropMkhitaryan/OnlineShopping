@@ -5,8 +5,8 @@ import com.example.userservice.config.JwtService;
 import com.example.userservice.customException.UserEmailConflictException;
 import com.example.userservice.customException.UserNotFoundException;
 import com.example.userservice.dto.request.AuthenticationRequest;
-import com.example.userservice.dto.response.AuthenticationResponse;
 import com.example.userservice.dto.request.RegisterRequest;
+import com.example.userservice.dto.response.AuthenticationResponse;
 import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

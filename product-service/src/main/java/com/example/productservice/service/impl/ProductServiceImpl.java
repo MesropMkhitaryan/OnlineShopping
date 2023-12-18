@@ -2,14 +2,12 @@ package com.example.productservice.service.impl;
 
 import com.example.productservice.customException.ProductNotFoundException;
 import com.example.productservice.dto.request.ProductRequest;
-import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.dto.request.ProductUpdateRequest;
+import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.feign.User;
 import com.example.productservice.feign.UserFeignClient;
-import com.example.productservice.model.Bucket;
 import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
-import com.example.productservice.repository.BucketRepository;
 import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.service.BucketService;
 import com.example.productservice.service.ProductService;

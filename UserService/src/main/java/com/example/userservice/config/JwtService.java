@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-//    private final UserServiceImpl service;
 
     private static final String SECRET_KEY = "2829dfcaad161b7a5510bee4891df572345fd5b1699ee5f52a7dc62f2889b0bd";
 

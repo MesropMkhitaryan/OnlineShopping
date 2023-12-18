@@ -1,7 +1,6 @@
 package com.example.productservice.controller;
 
 import com.example.productservice.service.BucketService;
-import com.example.productservice.service.impl.BucketServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

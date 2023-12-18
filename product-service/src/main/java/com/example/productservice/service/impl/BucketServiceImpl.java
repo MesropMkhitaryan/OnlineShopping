@@ -8,7 +8,6 @@ import com.example.productservice.model.Product;
 import com.example.productservice.repository.BucketRepository;
 import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.service.BucketService;
-import com.example.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

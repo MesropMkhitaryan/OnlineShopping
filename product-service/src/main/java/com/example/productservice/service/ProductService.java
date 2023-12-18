@@ -1,8 +1,8 @@
 package com.example.productservice.service;
 
 import com.example.productservice.dto.request.ProductRequest;
-import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.dto.request.ProductUpdateRequest;
+import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 

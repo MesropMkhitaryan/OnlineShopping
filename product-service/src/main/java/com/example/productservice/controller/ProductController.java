@@ -1,8 +1,8 @@
 package com.example.productservice.controller;
 
 import com.example.productservice.dto.request.ProductRequest;
-import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.dto.request.ProductUpdateRequest;
+import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.service.ProductService;
 import com.example.productservice.util.IOUtil;
 import jakarta.validation.Valid;
