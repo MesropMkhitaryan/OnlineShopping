@@ -4,14 +4,12 @@ import com.example.productservice.customException.CategoryNotFoundException;
 import com.example.productservice.dto.request.CategoryRequest;
 import com.example.productservice.model.Category;
 import com.example.productservice.repository.CategoryRepository;
-import com.example.productservice.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -20,13 +18,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
-import static org.hamcrest.Matchers.any;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static reactor.retry.Repeat.times;
 @ExtendWith(SpringExtension.class)
 class CategoryServiceImplTest {
 

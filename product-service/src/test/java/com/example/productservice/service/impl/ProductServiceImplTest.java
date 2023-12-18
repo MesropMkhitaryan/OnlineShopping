@@ -18,15 +18,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.bouncycastle.math.ec.rfc8032.Ed448.verify;
-import static org.hamcrest.Matchers.any;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static reactor.retry.Repeat.times;
 
 class ProductServiceImplTest {
 

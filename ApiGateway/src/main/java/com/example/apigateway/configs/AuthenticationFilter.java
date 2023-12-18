@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @RefreshScope
 @Component
 public class AuthenticationFilter implements GatewayFilter {
