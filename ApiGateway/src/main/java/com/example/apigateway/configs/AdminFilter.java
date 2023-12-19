@@ -30,13 +30,13 @@ public class AdminFilter implements GatewayFilter {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
-            String tokenWithBearer = request.getHeaders().getOrEmpty("Authorization").get(0);
-            String tokenWithoutBearer = tokenWithBearer.substring(7);
-            String authority = jwtUtils.extractAuthorities(tokenWithoutBearer);
+            String tokenHeader = request.getHeaders().getOrEmpty("Authorization").get(0);
+            String token = tokenHeader.substring(7);
+            String authority = jwtUtils.extractAuthorities(token);
             if (!authority.equals("ADMIN")){
                 return onError(exchange, HttpStatus.FORBIDDEN);
             }
-            if (jwtUtils.isTokenExpired(tokenWithoutBearer)) {
+            if (jwtUtils.isTokenExpired(token)) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
         }
