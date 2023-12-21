@@ -60,7 +60,6 @@ class OrderServiceImplTest {
 
     @Test
     void testOrderProduct_HappyPath() {
-        // Arrange
         OrderRequest orderRequest = new OrderRequest(50.0, (HashMap<UUID, Integer>) createProductQuantityMap());
         String authHeader = "valid-auth-token";
 

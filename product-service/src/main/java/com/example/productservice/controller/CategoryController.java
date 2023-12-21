@@ -21,7 +21,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/list", produces = "application/json")
-    public ResponseEntity<?> register(){
+    public ResponseEntity<?> list(){
         return ResponseEntity
                 .ok()
                 .body(service.list());
