@@ -32,10 +32,10 @@ class BucketServiceImplTest {
     private final UserFeignClient userFeignClient = Mockito.mock(UserFeignClient.class);
     private ProductService productService = Mockito.mock(ProductService.class);
     private BucketService bucketService;
-   @BeforeEach
-   void setUp(){
-       bucketService  =new BucketServiceImpl(bucketRepository,userFeignClient, productService);
-   }
+    @BeforeEach
+    void setUp() {
+        bucketService  =new BucketServiceImpl(bucketRepository,userFeignClient, productService);
+    }
 
     @Test
     void testIsNewProductInBucket_ProductAlreadyExists() {

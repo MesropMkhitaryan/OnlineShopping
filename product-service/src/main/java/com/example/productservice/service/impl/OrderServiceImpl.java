@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public Order orderProduct(OrderRequest orderRequest, String authHeader) {
-        if (orderRequest.getQuantity().isEmpty()) {
+        if (orderRequest.getProductIdAndQuantity().isEmpty()) {
             throw new EmptyOrderException("Order don't have single product");
         }
 
@@ -43,15 +43,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = createOrder(user);
         List<OrdersProduct> orderProducts = createOrderProducts(orderRequest, order, authHeader);
 
-        double sum = calculateOrderSum(orderProducts);
-
-        order.setSum(sum);
+        order.setSum(orderRequest.getSum());
         order.setOrderProducts(orderProducts);
 
         return orderRepository.save(order);
     }
 
-    private Order createOrder(User user) {
+    public Order createOrder(User user) {
         return orderRepository.save(Order.builder()
                 .userId(user.getId())
                 .status(OrderStatus.UNPAID)
@@ -60,15 +58,15 @@ public class OrderServiceImpl implements OrderService {
                 .build());
     }
 
-    private List<OrdersProduct> createOrderProducts(OrderRequest orderRequest, Order order, String authHeader) {
-        return orderRequest.getQuantity().keySet().stream()
+    public List<OrdersProduct> createOrderProducts(OrderRequest orderRequest, Order order, String authHeader) {
+        return orderRequest.getProductIdAndQuantity().keySet().stream()
                 .map(productId -> createOrderProduct(productId, orderRequest, order, authHeader))
                 .collect(Collectors.toList());
     }
 
-    private OrdersProduct createOrderProduct(UUID productId, OrderRequest orderRequest, Order order, String authHeader) {
+    public OrdersProduct createOrderProduct(UUID productId, OrderRequest orderRequest, Order order, String authHeader) {
         Product product = productService.findById(productId);
-        Integer orderedProductQuantity = orderRequest.getQuantity().get(productId);
+        Integer orderedProductQuantity = orderRequest.getProductIdAndQuantity().get(productId);
 
         productService.updateProductQuantity(product, orderedProductQuantity);
         bucketService.deleteProductFromOneBucket(productId, authHeader);
@@ -80,14 +78,6 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         return orderProductRepository.save(orderProduct);
-    }
-
-
-
-    private double calculateOrderSum(List<OrdersProduct> orderProducts) {
-        return orderProducts.stream()
-                .mapToDouble(orderProduct -> orderProduct.getProduct().getPrice() * orderProduct.getQuantity())
-                .sum();
     }
 
 }

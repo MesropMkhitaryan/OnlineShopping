@@ -37,7 +37,7 @@ public class GatewayConfig {
                 .route("products-service-order", r -> r.path("/api/v1/order/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://products-service"))
-                .route("category-service", r -> r.path("/api/v1/category/**")
+                .route("products-service-category", r -> r.path("/api/v1/category/**")
                         .filters(f-> f.filter(adminFilter))
                         .uri("lb://products-service"))
                 .build();

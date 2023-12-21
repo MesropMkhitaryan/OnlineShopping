@@ -16,5 +16,5 @@ import java.util.UUID;
 public class OrderRequest {
     @Min(value = 1, message = "sum of order should be at least 1")
     private double sum;
-    private HashMap<UUID, Integer> quantity;
+    private HashMap<UUID, Integer> productIdAndQuantity;
 }
